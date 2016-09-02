@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+  </head>
+  <body>
+    <h1> Welcome </h1>
+
+    <p> Who do you like? </p>
+
+    <input type="checkbox" name="vehicle" id="Lauren" value="Lauren"> Lauren<br>
+    <input type="checkbox" name="vehicle" value="Emily" > Emily<br>
+    <input type="checkbox" name="vehicle" id="Hannah" value="Hannah" > Hannah<br>
+    <input type="checkbox" name="vehicle" value="Lucy" > Lucy<br>
+    <input type="submit" id="submitToDB1" value="Submit">
+    <input type="submit" onclick=whosignedin() value="Who is signed in">
+
+    <script src="https://www.gstatic.com/firebasejs/3.3.0/firebase.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/3.3.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/3.3.0/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/3.3.0/firebase-database.js"></script>
+    <script>
+
+    var config = {
+      apiKey: "AIzaSyCowDjjVIdmAf7FZroaeeB1VBgw3Ysodjo",
+      authDomain: "my-cool-project-f0ee8.firebaseapp.com",
+      databaseURL: "https://my-cool-project-f0ee8.firebaseio.com",
+      storageBucket: "my-cool-project-f0ee8.appspot.com",
+    };
+    firebase.initializeApp(config);
+
+    var rootRef = firebase.database().ref();
+    user = rootRef.child(getCookie('useruid'))
+
+    function getCookie(cname) {
+        var name = cname + "=";
+        var ca = document.cookie.split(';');
+        for(var i = 0; i <ca.length; i++) {
+            var c = ca[i];
+            while (c.charAt(0)==' ') {
+                c = c.substring(1);
+            }
+            if (c.indexOf(name) == 0) {
+                return c.substring(name.length,c.length);
+            }
+        }
+        return "";
+    }
+
+    function whosignedin(user){
+        if (user) {
+          console.log(user + 'signed in')
+        } else {
+          console.log('no one signed in')
+        }
+    };
+
+
+
+    submitToDB1.addEventListener('click', function() {
+      if(document.getElementById('Hannah').checked){
+        user.set({liked:["Hannah"]})
+        console.log('checked')
+      } else {
+        console.log('not checked')
+      }
+    });
+    </script>
+
+  </body>
+</html>

@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+  </head>
+  <body>
+
+    <h3> Gender </h3>
+    <input type="radio" name="gender" value="male" checked> Male<br>
+    <input type="radio" name="gender" value="female"> Female<br>
+
+    <h3> Name </h3>
+    <input type="text" name="firstname"><br>
+
+    <input type="submit" onclick=update() value="Save">
+
+    <script src="https://www.gstatic.com/firebasejs/3.3.0/firebase.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/3.3.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/3.3.0/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/3.3.0/firebase-database.js"></script>
+    <script>
+
+    // var config = {
+    //   apiKey: "AIzaSyCowDjjVIdmAf7FZroaeeB1VBgw3Ysodjo",
+    //   authDomain: "my-cool-project-f0ee8.firebaseapp.com",
+    //   databaseURL: "https://my-cool-project-f0ee8.firebaseio.com",
+    //   storageBucket: "my-cool-project-f0ee8.appspot.com",
+    // };
+    // firebase.initializeApp(config);
+    //
+    // function update(){
+    //   writeUserData('male', 'rich', 'richuser')
+    // };
+    //
+    // function writeUserData(gender, name, username){
+    //     var postData = {
+    //       gender: gender,
+    //       name: name,
+    //       username: username
+    //     };
+    //
+    //     var newPostKey = firebase.database().ref().child('users').push().key;
+    //     var updates = {};
+    //     updates['/users/' + newPostKey] = postData;
+    //     updates['/users/' + uid + '/' + newPostKey] = postData;
+    //
+    //     return firebase.database().ref().update(updates);
+    //   }
+    </script>
+  </body>
+
+</html>

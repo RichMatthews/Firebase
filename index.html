@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+  <!-- <script src="index.js"></script> -->
+  </head>
+  <body>
+    <h1>Log in</h1>
+      username:<br>
+      <input id="log_in_username" type="text" name="username" ><br>
+      password:<br>
+      <input id="log_in_password" type="text" name="password" ><br><br>
+      <input type="submit" onclick=logUserIn() value="Log in">
+      <input type="submit" onclick=logUserOut() value="Log out">
+    <h1>Sign up</h1>
+      username:<br>
+      <input id="sign_up_username" type="text" name="username" ><br>
+      password:<br>
+      <input id="sign_up_password" type="text" name="password" ><br><br>
+      name:<br>
+      <input id="name" type="text" name="password" ><br><br>
+      gender:<br>
+      <input id="gender" type="text" name="password" ><br><br>
+      <input type="submit" id="signUp" onclick=signUserUp() value="Sign Up">
+      <input type="submit" id="getUsers" value="Get Users">
+      <input type="submit" id="retrieveUsers" onclick=pullFromDB() value="Retrieve Users">
+
+
+    <script src="https://www.gstatic.com/firebasejs/3.3.0/firebase.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/3.3.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/3.3.0/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/3.3.0/firebase-database.js"></script>
+    <script>
+
+    // var FirebaseTokenGenerator = require("firebase_token_generator");
+    // var tokenGenerator = new FirebaseTokenGenerator("<YOUR_FIREBASE_SECRET>");
+    // var token = tokenGenerator.createToken({ uid: "uniqueId1", some: "arbitrary", data: "here" });
+    var email = document.getElementById('sign_up_username').value;
+    var password = document.getElementById('log_in_password').value;
+
+    var config = {
+      apiKey: "AIzaSyCowDjjVIdmAf7FZroaeeB1VBgw3Ysodjo",
+      authDomain: "my-cool-project-f0ee8.firebaseapp.com",
+      databaseURL: "https://my-cool-project-f0ee8.firebaseio.com",
+      storageBucket: "my-cool-project-f0ee8.appspot.com",
+    };
+    firebase.initializeApp(config);
+
+    // currentMessageRef = rootRef.child('currentMessage')
+    //
+    //   getUsers.addEventListener('click', function() {
+    //     currentMessageRef.set(username.value)
+    //     console.log(username.value)
+    //   });
+
+    function signUserUp(){
+      var sign_up_username = document.getElementById('sign_up_username').value;
+      var password = document.getElementById('sign_up_password').value;
+      var name = document.getElementById('name').value;
+      var gender = document.getElementById('gender').value;
+      firebase.auth().createUserWithEmailAndPassword(sign_up_username, password).then(
+        function(result){
+          document.cookie = "useruid=" + result.uid + ";"
+          writeUserData(result.uid, sign_up_username, name, gender)
+        },
+        function(error){
+          var errorCode = error.code;
+          var errorMessage = error.message;
+          console.log(errorMessage);
+          })
+        };
+
+      function pullFromDB(){
+        // COULD NOT GET RESULT.UID TO APPEAR HERE DUE TO RESULT NOT BEING AN AVAILABLE FUNCTION
+        document.cookie = "useruid=" + result.uid + ";"
+        var pullUsers = firebase.database().ref('users/' + result.uid);
+        pullUsers.on('value', function(snapshot) {
+            console.log('hey' + snapshot.val());
+        });
+      }
+
+    function writeUserData(useruid, username, name, gender){
+      firebase.database().ref('/users/' + useruid).set({
+        username: username,
+        name: name,
+        gender: gender
+      });
+    }
+
+
+    function logUserIn(){
+      var email = document.getElementById('log_in_username').value;
+      var password = document.getElementById('log_in_password').value;
+      firebase.auth().signInWithEmailAndPassword(email, password).then(
+      function(result) {
+        document.cookie = "useruid=" + result.uid + ";"
+        document.location.replace('./details');
+      },
+      function(error) {
+        if (error) {
+        var errorCode = error.code;
+        var errorMessage = error.message;
+        console.log(errorMessage)
+      }
+      });
+    };
+
+    function logUserOut(){
+      // todo: delete this code once using server side
+      var cookies = document.cookie.split(";");
+        for (var i = 0; i < cookies.length; i++) {
+      	var cookie = cookies[i];
+      	var eqPos = cookie.indexOf("=");
+      	var name = eqPos > -1 ? cookie.substr(0, eqPos) : cookie;
+      	document.cookie = name + "=;expires=Thu, 01 Jan 1970 00:00:00 GMT";
+      }
+      firebase.auth().signOut().then(function() {
+        console.log("Sign-out successful.");
+      }, function(error) {
+        console.log("An error happened.");
+      });
+    }
+
+    </script>
+  </body>
+
+</html>
